@@ -174,8 +174,8 @@ parser sm_Parser(packet_in pkt, out headers hdr,
 control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t stdmeta)
 {
     //tuple1 for SM.Identifier and BR.BitString, whose index is 0 and 1 respectively. tuple2 for Verification Mark
-    register<bit<128>>(2) statustuple1;
-    register<bit<64>>(1) statustuple2;
+    register<bit<128>>(2) scr_statustuple1;
+    register<bit<64>>(1) scr_statustuple2;
 
     action calculate_vm() {
         //get the random Verification Mark
@@ -184,7 +184,7 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         random(random1, 1, 4200000000);
         random(random2, 1, 4200000000);
         //save and insert the Verification Mark
-        statustuple2.write(0,random1++random2);
+        scr_statustuple2.write(0,random1++random2);
         hdr.msh.msheader = hdr.msh.msheader[127:96] ++ random1 ++ random2 ++ hdr.msh.msheader[31:0];
     }
     action forward(bit<9> port) {
@@ -192,15 +192,23 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
     }
 
     action tuple1_save(bit<128> bitstring) {
-        statustuple1.write(0,hdr.smih.smidentifier);
+        scr_statustuple1.write(0,hdr.smih.smidentifier);
         //for debug only, the terminal cannot print the register correctly
         //statustuple1.read(hdr.ipv6.srcAddr,0);
-        statustuple1.write(1,bitstring);
+        scr_statustuple1.write(1,bitstring);
     }
 
     action write_bitstring() {
         hdr.brh.setValid();
-        statustuple1.read(hdr.brh.brbitstring, 1);
+        scr_statustuple1.read(hdr.brh.brbitstring, 1);
+        hdr.ipv6.payloadlength = hdr.ipv6.payloadlength + 16;
+        hdr.srh.lastentry = hdr.srh.lastentry + 1;
+    }
+
+    action read_write_vm() {
+        bit<64> temp;
+        scr_statustuple2.read(temp, 0);
+        hdr.msh.msheader = hdr.msh.msheader[127:96] ++ temp ++ hdr.msh.msheader[31:0];
     }
 
     table match_inport {
@@ -229,13 +237,45 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         actions = {write_bitstring;}
     }
 
+    table insert_vm {
+        actions = {read_write_vm;} 
+    }
+
+    //for base inport processing
+    
+    apply {
+        match_inport.apply();
+    }
+
+    //for ipv6 processing
+    /*
+    apply {
+        match_inport.apply();
+        match_ipv6.apply();
+    }*/
+
+
+    //for SCR process in Address Notification
+    /*
     apply {
         generate_vm.apply();
         save_sid.apply();
         insert_bit.apply();
         match_inport.apply();
         match_ipv6.apply();
-    }
+    }*/
+
+
+    //for SCR process in Member Management
+    /*
+    apply {
+        insert_vm.apply();
+        insert_bit.apply();
+        match_inport.apply();
+        match_ipv6.apply();
+    }*/
+
+
 
 
 }

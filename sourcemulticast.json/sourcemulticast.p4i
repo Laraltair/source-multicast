@@ -413,8 +413,8 @@ parser sm_Parser(packet_in pkt, out headers hdr,
 control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t stdmeta)
 {
 
-    register<bit<128>>(2) statustuple1;
-    register<bit<64>>(1) statustuple2;
+    register<bit<128>>(2) scr_statustuple1;
+    register<bit<64>>(1) scr_statustuple2;
 
     action calculate_vm() {
 
@@ -423,7 +423,7 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         random(random1, 1, 4200000000);
         random(random2, 1, 4200000000);
 
-        statustuple2.write(0,random1++random2);
+        scr_statustuple2.write(0,random1++random2);
         hdr.msh.msheader = hdr.msh.msheader[127:96] ++ random1 ++ random2 ++ hdr.msh.msheader[31:0];
     }
     action forward(bit<9> port) {
@@ -431,15 +431,23 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
     }
 
     action tuple1_save(bit<128> bitstring) {
-        statustuple1.write(0,hdr.smih.smidentifier);
+        scr_statustuple1.write(0,hdr.smih.smidentifier);
 
 
-        statustuple1.write(1,bitstring);
+        scr_statustuple1.write(1,bitstring);
     }
 
     action write_bitstring() {
         hdr.brh.setValid();
-        statustuple1.read(hdr.brh.brbitstring, 1);
+        scr_statustuple1.read(hdr.brh.brbitstring, 1);
+        hdr.ipv6.payloadlength = hdr.ipv6.payloadlength + 16;
+        hdr.srh.lastentry = hdr.srh.lastentry + 1;
+    }
+
+    action read_write_vm() {
+        bit<64> temp;
+        scr_statustuple2.read(temp, 0);
+        hdr.msh.msheader = hdr.msh.msheader[127:96] ++ temp ++ hdr.msh.msheader[31:0];
     }
 
     table match_inport {
@@ -468,15 +476,16 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         actions = {write_bitstring;}
     }
 
-    apply {
-        generate_vm.apply();
-        save_sid.apply();
-        insert_bit.apply();
-        match_inport.apply();
-        match_ipv6.apply();
+    table insert_vm {
+        actions = {read_write_vm;}
     }
 
 
+
+    apply {
+        match_inport.apply();
+    }
+# 281 "sourcemulticast.p4"
 }
 
 
@@ -504,13 +513,13 @@ control sm_Egress(inout headers hdr, inout metadata meta, inout standard_metadat
 
 control sm_VerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
-# 281 "sourcemulticast.p4"
+# 321 "sourcemulticast.p4"
     }
 }
 
 control sm_UpdateChecksum(inout headers hdr, inout metadata meta) {
     apply {
-# 299 "sourcemulticast.p4"
+# 339 "sourcemulticast.p4"
     }
 }
 

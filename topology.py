@@ -49,8 +49,10 @@ def main():
     net.start()
 
     net.get('h1').cmd('ip addr add 2001::1/64 dev eth0')
-    #net.get('h1').cmd('ip -6 route add 2002::1 encap seg6 mode inline segs 0011::0011,2003::1,2002::1,0:1:0:1::0,0:1:0:1:0:1:2:0,ff::1,0:0:1:7d0:bb8:fabe:1233:e310,ff02::1111 dev eth0')
+    
     net.get('h1').cmd('ip -6 route add 2002::1 encap seg6 mode inline segs ff02::1111,0:0:1:7d0:bb8:fabe:1233:e310,ff::1,0:1:0:1:0:1:2:0,0:1:0:1::0,2003::1 dev eth0')
+    
+    #net.get('h1').cmd('ip -6 route add 2002::1 encap seg6 mode inline segs ff02::1111,0:0:1:7d0:bb8:fabe:1233:e310,ff::1,0:1:0:1:0:1:2:0,0:1:0:1::0,2003::1 dev eth0')
 
     net.get('h1').cmd('ip sr tunsrc set 2001::1')
     net.get('h1').cmd('ip -6 route add ff02::1111 via 2002::1 dev eth0')
