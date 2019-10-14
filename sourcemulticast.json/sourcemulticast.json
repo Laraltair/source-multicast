@@ -1,0 +1,1317 @@
+{
+  "program" : "sourcemulticast.json/sourcemulticast.p4i",
+  "__meta__" : {
+    "version" : [2, 7],
+    "compiler" : "https://github.com/p4lang/p4c"
+  },
+  "header_types" : [
+    {
+      "name" : "scalars_0",
+      "id" : 0,
+      "fields" : [
+        ["tmp", 64, false],
+        ["random1", 32, false],
+        ["random2", 32, false]
+      ]
+    },
+    {
+      "name" : "Ethernet_h",
+      "id" : 1,
+      "fields" : [
+        ["dstAddr", 48, false],
+        ["srcAddr", 48, false],
+        ["ethernetType", 16, false]
+      ]
+    },
+    {
+      "name" : "IPv6_h",
+      "id" : 2,
+      "fields" : [
+        ["version", 4, false],
+        ["class", 8, false],
+        ["flowlabel", 20, false],
+        ["payloadlength", 16, false],
+        ["nextheader", 8, false],
+        ["hoplimit", 8, false],
+        ["srcAddr", 128, false],
+        ["dstAddr", 128, false]
+      ]
+    },
+    {
+      "name" : "Srh_h",
+      "id" : 3,
+      "fields" : [
+        ["nextheader", 8, false],
+        ["hdrextlen", 8, false],
+        ["routingtype", 8, false],
+        ["segmentleft", 8, false],
+        ["lastentry", 8, false],
+        ["flags", 8, false],
+        ["tag", 16, false]
+      ]
+    },
+    {
+      "name" : "Address_h",
+      "id" : 4,
+      "fields" : [
+        ["address1", 128, false],
+        ["address2", 128, false]
+      ]
+    },
+    {
+      "name" : "AL_h",
+      "id" : 5,
+      "fields" : [
+        ["alheader_ab", 128, false],
+        ["alheader", 128, false]
+      ]
+    },
+    {
+      "name" : "MS_h",
+      "id" : 6,
+      "fields" : [
+        ["msheader", 128, false]
+      ]
+    },
+    {
+      "name" : "SMI_h",
+      "id" : 7,
+      "fields" : [
+        ["smidentifier", 128, false]
+      ]
+    },
+    {
+      "name" : "BR_h",
+      "id" : 8,
+      "fields" : [
+        ["brbitstring", 128, false]
+      ]
+    },
+    {
+      "name" : "SMS_h",
+      "id" : 9,
+      "fields" : [
+        ["smstart", 128, false]
+      ]
+    },
+    {
+      "name" : "mystruct_idx",
+      "id" : 10,
+      "fields" : [
+        ["idx", 32, false]
+      ]
+    },
+    {
+      "name" : "standard_metadata",
+      "id" : 11,
+      "fields" : [
+        ["ingress_port", 9, false],
+        ["egress_spec", 9, false],
+        ["egress_port", 9, false],
+        ["clone_spec", 32, false],
+        ["instance_type", 32, false],
+        ["drop", 1, false],
+        ["recirculate_port", 16, false],
+        ["packet_length", 32, false],
+        ["enq_timestamp", 32, false],
+        ["enq_qdepth", 19, false],
+        ["deq_timedelta", 32, false],
+        ["deq_qdepth", 19, false],
+        ["ingress_global_timestamp", 48, false],
+        ["lf_field_list", 32, false],
+        ["mcast_grp", 16, false],
+        ["resubmit_flag", 1, false],
+        ["egress_rid", 16, false],
+        ["checksum_error", 1, false],
+        ["_padding", 4, false]
+      ]
+    }
+  ],
+  "headers" : [
+    {
+      "name" : "scalars",
+      "id" : 0,
+      "header_type" : "scalars_0",
+      "metadata" : true,
+      "pi_omit" : true
+    },
+    {
+      "name" : "standard_metadata",
+      "id" : 1,
+      "header_type" : "standard_metadata",
+      "metadata" : true,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ethernet",
+      "id" : 2,
+      "header_type" : "Ethernet_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ipv6",
+      "id" : 3,
+      "header_type" : "IPv6_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "srh",
+      "id" : 4,
+      "header_type" : "Srh_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "addresslist",
+      "id" : 5,
+      "header_type" : "Address_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "alh",
+      "id" : 6,
+      "header_type" : "AL_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "msh",
+      "id" : 7,
+      "header_type" : "MS_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "smih",
+      "id" : 8,
+      "header_type" : "SMI_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "brh",
+      "id" : 9,
+      "header_type" : "BR_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "smsh",
+      "id" : 10,
+      "header_type" : "SMS_h",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "mystruct1",
+      "id" : 11,
+      "header_type" : "mystruct_idx",
+      "metadata" : true,
+      "pi_omit" : true
+    }
+  ],
+  "header_stacks" : [],
+  "header_union_types" : [],
+  "header_unions" : [],
+  "header_union_stacks" : [],
+  "field_lists" : [],
+  "errors" : [
+    ["NoError", 1],
+    ["PacketTooShort", 2],
+    ["NoMatch", 3],
+    ["StackOutOfBounds", 4],
+    ["HeaderTooShort", 5],
+    ["ParserTimeout", 6],
+    ["Ipv4ChecksumError", 7]
+  ],
+  "enums" : [],
+  "parsers" : [
+    {
+      "name" : "parser",
+      "id" : 0,
+      "init_state" : "start",
+      "parse_states" : [
+        {
+          "name" : "start",
+          "id" : 0,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ethernet"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "0x86dd",
+              "mask" : null,
+              "next_state" : "parse_ipv6"
+            },
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ethernet", "ethernetType"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_ipv6",
+          "id" : 1,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ipv6"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "0x2b",
+              "mask" : null,
+              "next_state" : "parse_srh"
+            },
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ipv6", "nextheader"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_srh",
+          "id" : 2,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "srh"
+                }
+              ],
+              "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "addresslist"
+                }
+              ],
+              "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "alh"
+                }
+              ],
+              "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "msh"
+                }
+              ],
+              "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "smih"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "value" : "default",
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : []
+        }
+      ]
+    }
+  ],
+  "deparsers" : [
+    {
+      "name" : "deparser",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "sourcemulticast.p4",
+        "line" : 302,
+        "column" : 8,
+        "source_fragment" : "sm_Deparser"
+      },
+      "order" : ["ethernet", "ipv6", "srh", "addresslist", "alh", "msh", "brh", "smih", "smsh"]
+    }
+  ],
+  "meter_arrays" : [],
+  "counter_arrays" : [],
+  "register_arrays" : [
+    {
+      "name" : "statustuple1",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "sourcemulticast.p4",
+        "line" : 177,
+        "column" : 26,
+        "source_fragment" : "statustuple1"
+      },
+      "size" : 2,
+      "bitwidth" : 128
+    },
+    {
+      "name" : "statustuple2",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "sourcemulticast.p4",
+        "line" : 178,
+        "column" : 25,
+        "source_fragment" : "statustuple2"
+      },
+      "size" : 1,
+      "bitwidth" : 64
+    }
+  ],
+  "calculations" : [],
+  "learn_lists" : [],
+  "actions" : [
+    {
+      "name" : "NoAction",
+      "id" : 0,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 1,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 2,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 3,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "NoAction",
+      "id" : 4,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "calculate_vm",
+      "id" : 5,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "modify_field_rng_uniform",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "random1"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000001"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0xfa56ea00"
+            }
+          ]
+        },
+        {
+          "op" : "modify_field_rng_uniform",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "random2"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000001"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0xfa56ea00"
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "random1"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffffffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x20"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "random2"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000001ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "statustuple2"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 187,
+            "column" : 8,
+            "source_fragment" : "statustuple2.write(0,random1++random2)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["msh", "msheader"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "<<",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "|",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "&",
+                                      "left" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "<<",
+                                          "left" : {
+                                            "type" : "expression",
+                                            "value" : {
+                                              "op" : "&",
+                                              "left" : {
+                                                "type" : "expression",
+                                                "value" : {
+                                                  "op" : "|",
+                                                  "left" : {
+                                                    "type" : "expression",
+                                                    "value" : {
+                                                      "op" : "&",
+                                                      "left" : {
+                                                        "type" : "expression",
+                                                        "value" : {
+                                                          "op" : "<<",
+                                                          "left" : {
+                                                            "type" : "expression",
+                                                            "value" : {
+                                                              "op" : "&",
+                                                              "left" : {
+                                                                "type" : "expression",
+                                                                "value" : {
+                                                                  "op" : "&",
+                                                                  "left" : {
+                                                                    "type" : "expression",
+                                                                    "value" : {
+                                                                      "op" : "&",
+                                                                      "left" : {
+                                                                        "type" : "expression",
+                                                                        "value" : {
+                                                                          "op" : ">>",
+                                                                          "left" : {
+                                                                            "type" : "field",
+                                                                            "value" : ["msh", "msheader"]
+                                                                          },
+                                                                          "right" : {
+                                                                            "type" : "hexstr",
+                                                                            "value" : "0x60"
+                                                                          }
+                                                                        }
+                                                                      },
+                                                                      "right" : {
+                                                                        "type" : "hexstr",
+                                                                        "value" : "0xffffffffffffffffffffffffffffffff"
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  "right" : {
+                                                                    "type" : "hexstr",
+                                                                    "value" : "0xffffffff"
+                                                                  }
+                                                                }
+                                                              },
+                                                              "right" : {
+                                                                "type" : "hexstr",
+                                                                "value" : "0xffffffffffffffff"
+                                                              }
+                                                            }
+                                                          },
+                                                          "right" : {
+                                                            "type" : "hexstr",
+                                                            "value" : "0x20"
+                                                          }
+                                                        }
+                                                      },
+                                                      "right" : {
+                                                        "type" : "hexstr",
+                                                        "value" : "0xffffffffffffffff"
+                                                      }
+                                                    }
+                                                  },
+                                                  "right" : {
+                                                    "type" : "expression",
+                                                    "value" : {
+                                                      "op" : "&",
+                                                      "left" : {
+                                                        "type" : "expression",
+                                                        "value" : {
+                                                          "op" : "&",
+                                                          "left" : {
+                                                            "type" : "field",
+                                                            "value" : ["scalars", "random1"]
+                                                          },
+                                                          "right" : {
+                                                            "type" : "hexstr",
+                                                            "value" : "0xffffffffffffffff"
+                                                          }
+                                                        }
+                                                      },
+                                                      "right" : {
+                                                        "type" : "hexstr",
+                                                        "value" : "0x00000001ffffffff"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "right" : {
+                                                "type" : "hexstr",
+                                                "value" : "0xffffffffffffffffffffffff"
+                                              }
+                                            }
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0x20"
+                                          }
+                                        }
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0xffffffffffffffffffffffff"
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "&",
+                                      "left" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : "&",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "random2"]
+                                          },
+                                          "right" : {
+                                            "type" : "hexstr",
+                                            "value" : "0xffffffffffffffffffffffff"
+                                          }
+                                        }
+                                      },
+                                      "right" : {
+                                        "type" : "hexstr",
+                                        "value" : "0x0000000000000001ffffffff"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffffffffffffffffffffffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x20"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffffffffffffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "&",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["msh", "msheader"]
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0xffffffff"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffffffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x000000000000000000000001ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 188,
+            "column" : 8,
+            "source_fragment" : "hdr.msh.msheader = hdr.msh.msheader[127:96] ++ random1 ++ random2 ++ hdr.msh.msheader[31:0]"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "forward",
+      "id" : 6,
+      "runtime_data" : [
+        {
+          "name" : "port",
+          "bitwidth" : 9
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 191,
+            "column" : 8,
+            "source_fragment" : "stdmeta.egress_spec = port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "forward",
+      "id" : 7,
+      "runtime_data" : [
+        {
+          "name" : "port",
+          "bitwidth" : 9
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 191,
+            "column" : 8,
+            "source_fragment" : "stdmeta.egress_spec = port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "tuple1_save",
+      "id" : 8,
+      "runtime_data" : [
+        {
+          "name" : "bitstring",
+          "bitwidth" : 128
+        }
+      ],
+      "primitives" : [
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "statustuple1"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000000"
+            },
+            {
+              "type" : "field",
+              "value" : ["smih", "smidentifier"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 195,
+            "column" : 8,
+            "source_fragment" : "statustuple1.write(0,hdr.smih.smidentifier)"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "statustuple1"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000001"
+            },
+            {
+              "type" : "runtime_data",
+              "value" : 0
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 198,
+            "column" : 8,
+            "source_fragment" : "statustuple1.write(1,bitstring)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "write_bitstring",
+      "id" : 9,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "add_header",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "brh"
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 202,
+            "column" : 8,
+            "source_fragment" : "hdr.brh.setValid()"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["brh", "brbitstring"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "statustuple1"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00000001"
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 203,
+            "column" : 8,
+            "source_fragment" : "statustuple1.read(hdr.brh.brbitstring, 1)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "NoAction",
+      "id" : 10,
+      "runtime_data" : [],
+      "primitives" : []
+    },
+    {
+      "name" : "write_rgt",
+      "id" : 11,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ethernet", "srcAddr"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "hexstr",
+                    "value" : "0x000000000000"
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["standard_metadata", "deq_timedelta"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 251,
+            "column" : 8,
+            "source_fragment" : "hdr.ethernet.srcAddr = buf ++ stdmeta.deq_timedelta"
+          }
+        }
+      ]
+    }
+  ],
+  "pipelines" : [
+    {
+      "name" : "ingress",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "sourcemulticast.p4",
+        "line" : 174,
+        "column" : 8,
+        "source_fragment" : "sm_Ingress"
+      },
+      "init_table" : "generate_vm",
+      "tables" : [
+        {
+          "name" : "generate_vm",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 220,
+            "column" : 10,
+            "source_fragment" : "generate_vm"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [5, 2],
+          "actions" : ["calculate_vm", "NoAction"],
+          "base_default_next" : "save_sid",
+          "next_tables" : {
+            "calculate_vm" : "save_sid",
+            "NoAction" : "save_sid"
+          },
+          "default_entry" : {
+            "action_id" : 2,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "save_sid",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 224,
+            "column" : 10,
+            "source_fragment" : "save_sid"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [8, 3],
+          "actions" : ["tuple1_save", "NoAction"],
+          "base_default_next" : "insert_bit",
+          "next_tables" : {
+            "tuple1_save" : "insert_bit",
+            "NoAction" : "insert_bit"
+          },
+          "default_entry" : {
+            "action_id" : 3,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "insert_bit",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 228,
+            "column" : 10,
+            "source_fragment" : "insert_bit"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [9, 4],
+          "actions" : ["write_bitstring", "NoAction"],
+          "base_default_next" : "match_inport",
+          "next_tables" : {
+            "write_bitstring" : "match_inport",
+            "NoAction" : "match_inport"
+          },
+          "default_entry" : {
+            "action_id" : 4,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "match_inport",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 206,
+            "column" : 10,
+            "source_fragment" : "match_inport"
+          },
+          "key" : [
+            {
+              "match_type" : "exact",
+              "target" : ["standard_metadata", "ingress_port"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [6, 0],
+          "actions" : ["forward", "NoAction"],
+          "base_default_next" : "match_ipv6",
+          "next_tables" : {
+            "forward" : "match_ipv6",
+            "NoAction" : "match_ipv6"
+          },
+          "default_entry" : {
+            "action_id" : 0,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "match_ipv6",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 213,
+            "column" : 10,
+            "source_fragment" : "match_ipv6"
+          },
+          "key" : [
+            {
+              "match_type" : "lpm",
+              "target" : ["ipv6", "dstAddr"],
+              "mask" : null
+            }
+          ],
+          "match_type" : "lpm",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [7, 1],
+          "actions" : ["forward", "NoAction"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "forward" : null,
+            "NoAction" : null
+          },
+          "default_entry" : {
+            "action_id" : 1,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        }
+      ],
+      "action_profiles" : [],
+      "conditionals" : []
+    },
+    {
+      "name" : "egress",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "sourcemulticast.p4",
+        "line" : 245,
+        "column" : 8,
+        "source_fragment" : "sm_Egress"
+      },
+      "init_table" : "write_time",
+      "tables" : [
+        {
+          "name" : "write_time",
+          "id" : 5,
+          "source_info" : {
+            "filename" : "sourcemulticast.p4",
+            "line" : 256,
+            "column" : 10,
+            "source_fragment" : "write_time"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [11, 10],
+          "actions" : ["write_rgt", "NoAction"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "write_rgt" : null,
+            "NoAction" : null
+          },
+          "default_entry" : {
+            "action_id" : 10,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        }
+      ],
+      "action_profiles" : [],
+      "conditionals" : []
+    }
+  ],
+  "checksums" : [],
+  "force_arith" : [],
+  "extern_instances" : [],
+  "field_aliases" : [
+    [
+      "queueing_metadata.enq_timestamp",
+      ["standard_metadata", "enq_timestamp"]
+    ],
+    [
+      "queueing_metadata.enq_qdepth",
+      ["standard_metadata", "enq_qdepth"]
+    ],
+    [
+      "queueing_metadata.deq_timedelta",
+      ["standard_metadata", "deq_timedelta"]
+    ],
+    [
+      "queueing_metadata.deq_qdepth",
+      ["standard_metadata", "deq_qdepth"]
+    ],
+    [
+      "intrinsic_metadata.ingress_global_timestamp",
+      ["standard_metadata", "ingress_global_timestamp"]
+    ],
+    [
+      "intrinsic_metadata.lf_field_list",
+      ["standard_metadata", "lf_field_list"]
+    ],
+    [
+      "intrinsic_metadata.mcast_grp",
+      ["standard_metadata", "mcast_grp"]
+    ],
+    [
+      "intrinsic_metadata.resubmit_flag",
+      ["standard_metadata", "resubmit_flag"]
+    ],
+    [
+      "intrinsic_metadata.egress_rid",
+      ["standard_metadata", "egress_rid"]
+    ]
+  ]
+}

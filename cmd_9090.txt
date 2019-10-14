@@ -1,0 +1,8 @@
+table_add match_inport forward 1 => 2
+table_add match_inport forward 2 => 1
+table_add match_ipv6 forward 2001::1/64 => 1
+table_add match_ipv6 forward 2002::1/64 => 2
+table_add write_time write_rgt  => 
+table_add generate_vm calculate_vm  => 
+table_add save_sid tuple1_save  => 11
+table_add insert_bit write_bitstring  => 
