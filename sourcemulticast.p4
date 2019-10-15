@@ -211,6 +211,10 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         hdr.msh.msheader = hdr.msh.msheader[127:96] ++ temp ++ hdr.msh.msheader[31:0];
     }
 
+    action set_group(bit<16> group) {
+        stdmeta.mcast_grp = group;        
+    }
+
     table match_inport {
         key = {
             stdmeta.ingress_port : exact;
@@ -241,12 +245,19 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         actions = {read_write_vm;} 
     }
 
-    //for base inport processing
-    
-    apply {
-        match_inport.apply();
+    table replicate {
+        key = {
+            hdr.smih.smidentifier : exact;
+        }
+        actions = {set_group;}
     }
 
+    //for base inport processing
+    /*
+    apply {
+        match_inport.apply();
+    }*/
+    
     //for ipv6 processing
     /*
     apply {
@@ -256,14 +267,14 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
 
 
     //for SCR process in Address Notification
-    /*
+    
     apply {
         generate_vm.apply();
         save_sid.apply();
         insert_bit.apply();
         match_inport.apply();
         match_ipv6.apply();
-    }*/
+    }
 
 
     //for SCR process in Member Management
@@ -271,6 +282,15 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
     apply {
         insert_vm.apply();
         insert_bit.apply();
+        match_inport.apply();
+        match_ipv6.apply();
+    }*/
+
+
+    //for D-FIBs
+    /*
+    apply {
+        replicate.apply();
         match_inport.apply();
         match_ipv6.apply();
     }*/
@@ -293,10 +313,51 @@ control sm_Egress(inout headers hdr, inout metadata meta, inout standard_metadat
         //rgt.write(0, stdmeta.deq_timedelta);
     }
 
+    action d_fibs_action_1() {
+        hdr.ipv6.dstAddr = hdr.addresslist.address2;
+        hdr.srh.setInvalid();
+        hdr.addresslist.setInvalid();
+        hdr.alh.setInvalid();
+        hdr.msh.setInvalid();
+        hdr.smih.setInvalid();
+        hdr.smsh.setInvalid();
+
+    }
+
+    action d_fibs_action_2() {
+        hdr.ipv6.dstAddr = hdr.addresslist.address1;
+        hdr.srh.setInvalid();
+        hdr.addresslist.setInvalid();
+        hdr.alh.setInvalid();
+        hdr.msh.setInvalid();
+        hdr.smih.setInvalid();
+        hdr.smsh.setInvalid();
+    }
+
+    table D_FIBs_port1 {
+        key = {
+            stdmeta.egress_port : exact;
+        }
+        actions = {d_fibs_action_1;}
+    }
+
+    table D_FIBs_port2 {
+        key = {
+            stdmeta.egress_port : exact;
+        }
+        actions = {d_fibs_action_2;}
+    }
+
     table write_time {
         actions = {write_rgt;}
     }
+
     apply {
+        //for D-FIBs
+        /*
+        D_FIBs_port1.apply();
+        D_FIBs_port2.apply();
+        */
         write_time.apply();
     }
 

@@ -450,6 +450,10 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         hdr.msh.msheader = hdr.msh.msheader[127:96] ++ temp ++ hdr.msh.msheader[31:0];
     }
 
+    action set_group(bit<16> group) {
+        stdmeta.mcast_grp = group;
+    }
+
     table match_inport {
         key = {
             stdmeta.ingress_port : exact;
@@ -480,12 +484,21 @@ control sm_Ingress(inout headers hdr, inout metadata meta, inout standard_metada
         actions = {read_write_vm;}
     }
 
-
-
-    apply {
-        match_inport.apply();
+    table replicate {
+        key = {
+            hdr.smih.smidentifier : exact;
+        }
+        actions = {set_group;}
     }
-# 281 "sourcemulticast.p4"
+# 271 "sourcemulticast.p4"
+    apply {
+        generate_vm.apply();
+        save_sid.apply();
+        insert_bit.apply();
+        match_inport.apply();
+        match_ipv6.apply();
+    }
+# 301 "sourcemulticast.p4"
 }
 
 
@@ -501,10 +514,51 @@ control sm_Egress(inout headers hdr, inout metadata meta, inout standard_metadat
 
     }
 
+    action d_fibs_action_1() {
+        hdr.ipv6.dstAddr = hdr.addresslist.address2;
+        hdr.srh.setInvalid();
+        hdr.addresslist.setInvalid();
+        hdr.alh.setInvalid();
+        hdr.msh.setInvalid();
+        hdr.smih.setInvalid();
+        hdr.smsh.setInvalid();
+
+    }
+
+    action d_fibs_action_2() {
+        hdr.ipv6.dstAddr = hdr.addresslist.address1;
+        hdr.srh.setInvalid();
+        hdr.addresslist.setInvalid();
+        hdr.alh.setInvalid();
+        hdr.msh.setInvalid();
+        hdr.smih.setInvalid();
+        hdr.smsh.setInvalid();
+    }
+
+    table D_FIBs_port1 {
+        key = {
+            stdmeta.egress_port : exact;
+        }
+        actions = {d_fibs_action_1;}
+    }
+
+    table D_FIBs_port2 {
+        key = {
+            stdmeta.egress_port : exact;
+        }
+        actions = {d_fibs_action_2;}
+    }
+
     table write_time {
         actions = {write_rgt;}
     }
+
     apply {
+
+
+
+
+
         write_time.apply();
     }
 
@@ -513,13 +567,13 @@ control sm_Egress(inout headers hdr, inout metadata meta, inout standard_metadat
 
 control sm_VerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
-# 321 "sourcemulticast.p4"
+# 382 "sourcemulticast.p4"
     }
 }
 
 control sm_UpdateChecksum(inout headers hdr, inout metadata meta) {
     apply {
-# 339 "sourcemulticast.p4"
+# 400 "sourcemulticast.p4"
     }
 }
 

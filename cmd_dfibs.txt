@@ -1,0 +1,13 @@
+table_add match_inport forward 1 => 2
+table_add match_inport forward 2 => 1
+table_add match_ipv6 forward 2001::1/64 => 1
+table_add match_ipv6 forward 2002::1/64 => 2
+mc_mgrp_create 1
+mc_node_create 0 1
+mc_node_create 1 2
+mc_node_associate 1 0
+mc_node_associate 1 1
+table_add replicate set_group 0:0:1:7d0:bb8:fabe:1233:e310 => 1
+table_add D_FIBs_port1 d_fibs_action_1 1 => 
+table_add D_FIBs_port2 d_fibs_action_2 2 => 
+table_add write_time write_rgt  => 
